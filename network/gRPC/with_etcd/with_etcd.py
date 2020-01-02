@@ -38,8 +38,12 @@ def main():
         stub = api_pb2_grpc.JobStub(channel)
         for i in range(10):
             response = stub.GetJob(api_pb2.JobRequest(vid=str(i)))
-            # print(type(response))
+            print(type(response))
             print(i, response)
+            print(type(response.job_info))
+            print(i, response.job_info)
+            print(' ', response.job_info.job_id, response.job_info.version)
+            print(dict(response.job_info))
 
         put_data = {
             'vid':'1',

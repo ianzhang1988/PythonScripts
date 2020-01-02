@@ -5,6 +5,16 @@
 
 import etcd3
 
+# 'svic.proxy.tv.sohuno.com:8200'
+
+client = etcd3.client(host='svic.proxy.tv.sohuno.com', port=8200)
+
+c = client.get_prefix('/etcdv3_resolver/svic.pugc.service')
+print(c)
+print (list(c))
+
+exit(0)
+
 # client = etcd.Client() # this will create a client against etcd server running on localhost on port 4001
 
 client = etcd3.client(host='10.18.29.179', port=2379)
@@ -30,5 +40,4 @@ print (list(c))
 
 # for i in c:
 #     print(i)
-
 
