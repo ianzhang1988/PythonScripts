@@ -5,7 +5,36 @@
 
 import asyncio
 
+class MyException(Exception):
+    pass
+
 class Pipeline(object):
+    def __init__(self):
+        self.source = None
+
+    def __iter__(self):
+        return self.generator()
+
+    def generator(self):
+        while self.has_next():
+            data = next(self.source) if self.source else {}
+            if self.filter(data):
+                yield self.map(data)
+
+    def __or__(self, other):
+        other.source = self.generator()
+        return other
+
+    def filter(self, data):
+        return True
+
+    def map(self, data):
+        return data
+
+    def has_next(self):
+        return True
+
+class AioPipeline(object):
     def __init__(self):
         self.source = None
 
@@ -16,6 +45,8 @@ class Pipeline(object):
         try:
             # while self.has_next():
             async for data in self.source:
+                if not self.has_next():
+                    return
             #data = next(self.source) if self.source else {}
                 if await self.filter(data):
                     yield await self.map(data)
@@ -37,7 +68,7 @@ class Pipeline(object):
         return True
 
 
-class AllNumbers(Pipeline):
+class AllNumbers(AioPipeline):
     async def generator(self):
         value = 0
         while True:
@@ -45,12 +76,12 @@ class AllNumbers(Pipeline):
             value += 1
 
 
-class Evens(Pipeline):
+class Evens(AioPipeline):
     async def filter(self, value):
         return value % 2 == 0
 
 
-class MultipleOf(Pipeline):
+class MultipleOf(AioPipeline):
     def __init__(self, factor=1):
         self.factor = factor
         super(MultipleOf, self).__init__()
@@ -59,24 +90,30 @@ class MultipleOf(Pipeline):
         return value % self.factor == 0
 
 
-class Printer(Pipeline):
+class Printer(AioPipeline):
     async def map(self, value):
         print(value)
         return value
 
 
-class First(Pipeline):
+class First(AioPipeline):
     def __init__(self, total=10):
         self.total = total
         self.count = 0
         super(First, self).__init__()
 
     async def map(self, value):
+        # await asyncio.sleep(1)
         self.count += 1
         if self.count > self.total:
+            #raise MyException('test')
             raise StopAsyncIteration
         return value
 
+
+async def aio_drain(pipeline):
+    async for _ in pipeline:
+        pass
 
 async def main():
     all_numbers = AllNumbers()
@@ -85,10 +122,13 @@ async def main():
     printer = Printer()
     first_10 = First(10)
 
-    pipeline = all_numbers | evens | multiple_of_3 | first_10 | printer
+    try:
+        # a | b, a b still are sequential
+        pipeline = all_numbers | evens | multiple_of_3 | first_10 | printer
+        await aio_drain(pipeline)
 
-    async for i in pipeline:
-        pass
+    except MyException as e:
+        print('catch %s' % e)
 
 
 if __name__ == '__main__':
