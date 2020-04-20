@@ -1,5 +1,48 @@
-# 已经写傻了
 class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if not s:
+            return ""
+
+        if len(s)==1:
+            return s
+
+        longest = 0
+        out_l = 0
+        out_r = 0
+        for i in range(1, len(s)):
+            print(i)
+            if s[i] == s[i-1]: # abba
+                palindrome_l, palindrome_r = self.find_palindrome(s, i-1, i)
+                if palindrome_r - palindrome_l + 1 > longest:
+                    longest = palindrome_r - palindrome_l + 1
+                    out_l = palindrome_l
+                    out_r = palindrome_r
+
+            if i>1 and s[i] == s[i-2]: # ababa
+                palindrome_l, palindrome_r = self.find_palindrome(s, i-2, i)
+                print(palindrome_l, palindrome_r)
+                if palindrome_r - palindrome_l + 1 > longest:
+                    longest = palindrome_r - palindrome_l + 1
+                    out_l = palindrome_l
+                    out_r = palindrome_r
+
+        return s[out_l:out_r+1]
+
+    def find_palindrome(self,s, l, r):
+        while l-1 >= 0 and r+1 < len(s):
+            if s[l-1] != s[r+1]:
+                break
+            l-=1
+            r+=1
+        return l,r
+
+def main():
+    s = Solution()
+    ans = s.longestPalindrome("babad")
+    print(ans)
+
+# 已经写傻了
+class SolutionNotWorking:
     def longestPalindrome(self, s: str) -> str:
         if len(s)< 2:
             return s
@@ -94,3 +137,5 @@ class Solution:
                 
 #         return flag
                 
+if __name__ == '__main__':
+    main()
