@@ -13,7 +13,7 @@ from grpc import RpcError
 
 
 def get_service():
-    client = etcd3.client(host='10.18.29.179', port=2379)
+    client = etcd3.client(host='127.0.0.1', port=2379)
 
     c = client.get_prefix('/etcdv3_resolver/svic.pugc.service/')
     print(type(c))
