@@ -5,11 +5,10 @@
 
 import etcd3
 
-# 'svic.proxy.tv.sohuno.com:8200'
 
-client = etcd3.client(host='svic.proxy.tv.sohuno.com', port=8200)
+client = etcd3.client(host='127.0.0.1', port=8200)
 
-c = client.get_prefix('/etcdv3_resolver/svic.pugc.service')
+c = client.get_prefix('/etcdv3_resolver')
 print(c)
 print (list(c))
 
@@ -17,7 +16,7 @@ exit(0)
 
 # client = etcd.Client() # this will create a client against etcd server running on localhost on port 4001
 
-client = etcd3.client(host='10.18.29.179', port=2379)
+client = etcd3.client(host='127.0.0.1', port=2379)
 #client = etcd.Client(host=(('127.0.0.1', 4001), ('127.0.0.1', 4002), ('127.0.0.1', 4003)))
 #client = etcd.Client(host='127.0.0.1', port=4003, allow_redirect=False) # wont let you run sensitive commands on non-leader machines, default is true
 # If you have defined a SRV record for _etcd._tcp.example.com pointing to the clients
@@ -30,11 +29,11 @@ client = etcd3.client(host='10.18.29.179', port=2379)
 # print(type(c))
 # print(c)
 
-c = client.get('/etcdv3_resolver/svic.pugc.service/10.18.29.179:9000')
+c = client.get('/etcdv3_resolver/127.0.0.1:9000')
 print(type(c))
 print(c[0])
 
-c = client.get_prefix('/etcdv3_resolver/svic.pugc.service/')
+c = client.get_prefix('/etcdv3_resolver/')
 print(c)
 print (list(c))
 
