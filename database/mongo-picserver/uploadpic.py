@@ -4,7 +4,7 @@ import os
 import requests
 from concurrent.futures import ThreadPoolExecutor
 
-pic_server='http://10.10.65.135:3000/put'
+pic_server='http://127.0.0.1:3000/put'
 
 def upload(args):
     file, id, name = args

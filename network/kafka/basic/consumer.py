@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # broker = argv[0]
     # group = argv[1]
     # topics = argv[2:]
-    broker = "10.19.17.188:9092"
+    broker = "127.0.0.1:9092"
     group = "test"
     topics = ["test",]
 

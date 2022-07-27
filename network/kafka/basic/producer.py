@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # broker = sys.argv[1]
     # topic = sys.argv[2]
 
-    broker = "10.19.17.188:9092"
+    broker = "127.0.0.1:9092"
     topic = "test"
 
     # Producer configuration

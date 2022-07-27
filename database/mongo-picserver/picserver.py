@@ -6,7 +6,7 @@ import pymongo, os
 import bson.binary
 from cStringIO import StringIO
 
-mongo_url = '10.10.65.135'
+mongo_url = '127.0.0.1'
 
 class UploadFileHandler(tornado.web.RequestHandler):
     def initialize(self):
